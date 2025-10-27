@@ -1,0 +1,112 @@
+#include <iostream>
+using namespace std;
+
+struct Galo {
+    char jogada;
+    bool ocupada = false;
+};
+
+Galo myMatrix[3][3];
+
+struct Jogadores {
+    string nome;
+    string simbolo;
+};
+
+void pedeNome(Jogadores &p1, Jogadores &p2) {
+    cout << "Qual o seu nome jogador 1: ";
+    cin >> p1.nome;
+    cout << "Qual o seu símbolo (X ou O): ";
+    cin >> p1.simbolo;
+
+    while (p1.simbolo != "X" && p1.simbolo != "O") {
+        cout << "Símbolo inválido. Escolha X ou O: ";
+        cin >> p1.simbolo;
+    }
+
+    cout << "Qual o seu nome jogador 2: ";
+    cin >> p2.nome;
+    p2.simbolo = (p1.simbolo == "X") ? "O" : "X";
+    cout << p2.nome << ", seu símbolo é: " << p2.simbolo << endl;
+}
+
+void iniciaTabu() {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            myMatrix[i][j].jogada = '.';
+            myMatrix[i][j].ocupada = false;
+        }
+    }
+}
+
+void MostraTabu() {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cout << myMatrix[i][j].jogada << " ";
+        }
+        cout << endl;
+    }
+}
+
+bool jogadaValida(int linha, int coluna) {
+    if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3)
+        return false;
+    return myMatrix[linha - 1][coluna - 1].jogada == '.';
+}
+
+void joga(Jogadores &jogador) {
+    int linha, coluna;
+
+    cout << jogador.nome << ", sua vez de jogar (" << jogador.simbolo << "). Linha e coluna (1-3): ";
+    cin >> linha >> coluna;
+
+    while (!jogadaValida(linha, coluna)) {
+        cout << "Jogada inválida! Tente novamente: ";
+        cin >> linha >> coluna;
+    }
+
+    myMatrix[linha - 1][coluna - 1].jogada = jogador.simbolo[0];
+    myMatrix[linha - 1][coluna - 1].ocupada = true;
+}
+
+bool verificaVitoria(char simbolo) {
+    for (int i = 0; i < 3; i++) {
+        if (myMatrix[i][0].jogada == simbolo && myMatrix[i][1].jogada == simbolo && myMatrix[i][2].jogada == simbolo)
+            return true;
+        if (myMatrix[0][i].jogada == simbolo && myMatrix[1][i].jogada == simbolo && myMatrix[2][i].jogada == simbolo)
+            return true;
+    }
+
+    if (myMatrix[0][0].jogada == simbolo && myMatrix[1][1].jogada == simbolo && myMatrix[2][2].jogada == simbolo)
+        return true;
+    if (myMatrix[0][2].jogada == simbolo && myMatrix[1][1].jogada == simbolo && myMatrix[2][0].jogada == simbolo)
+        return true;
+
+    return false;
+}
+
+int main() {
+    Jogadores p1, p2;
+    pedeNome(p1, p2);
+    iniciaTabu();
+
+    for (int i = 0; i < 9; i++) {
+        MostraTabu();
+
+        if (i % 2 == 0)
+            joga(p1);
+        else
+            joga(p2);
+
+        char simboloAtual = (i % 2 == 0) ? p1.simbolo[0] : p2.simbolo[0];
+        if (verificaVitoria(simboloAtual)) {
+            MostraTabu();
+            cout << "Parabéns, " << ((i % 2 == 0) ? p1.nome : p2.nome) << "! Você venceu!" << endl;
+            return 0;
+        }
+    }
+
+    MostraTabu();
+    cout << "Empate!" << endl;
+    return 0;
+}
