@@ -86,6 +86,11 @@ bool verificaVitoria(char simbolo) {
 }
 
 int main() {
+
+cout << "==============================\n";
+cout << "      🕹️  JOGO DO GALO      \n";
+cout << "==============================\n\n";
+
     Jogadores p1, p2;
     pedeNome(p1, p2);
     iniciaTabu();
