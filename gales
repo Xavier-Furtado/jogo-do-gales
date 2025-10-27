@@ -16,17 +16,17 @@ struct Jogadores {
 void pedeNome(Jogadores &p1, Jogadores &p2) {
     cout << "Qual o seu nome jogador 1: ";
     cin >> p1.nome;
-    cout << "Qual o seu símbolo (X ou O): ";
+    cout << "Qual o seu símbolo (x ou o): ";
     cin >> p1.simbolo;
 
-    while (p1.simbolo != "X" && p1.simbolo != "O") {
-        cout << "Símbolo inválido. Escolha X ou O: ";
+    while (p1.simbolo != "x" && p1.simbolo != "o") {
+        cout << "Simbolo inválido. Escolha x ou o: ";
         cin >> p1.simbolo;
     }
 
     cout << "Qual o seu nome jogador 2: ";
     cin >> p2.nome;
-    p2.simbolo = (p1.simbolo == "X") ? "O" : "X";
+    p2.simbolo = (p1.simbolo == "x") ? "o" : "x";
     cout << p2.nome << ", seu símbolo é: " << p2.simbolo << endl;
 }
 
@@ -61,7 +61,7 @@ void joga(Jogadores &jogador) {
     cin >> linha >> coluna;
 
     while (!jogadaValida(linha, coluna)) {
-        cout << "Jogada inválida! Tente novamente: ";
+        cout << "Jogada inválida!";
         cin >> linha >> coluna;
     }
 
@@ -76,7 +76,6 @@ bool verificaVitoria(char simbolo) {
         if (myMatrix[0][i].jogada == simbolo && myMatrix[1][i].jogada == simbolo && myMatrix[2][i].jogada == simbolo)
             return true;
     }
-
     if (myMatrix[0][0].jogada == simbolo && myMatrix[1][1].jogada == simbolo && myMatrix[2][2].jogada == simbolo)
         return true;
     if (myMatrix[0][2].jogada == simbolo && myMatrix[1][1].jogada == simbolo && myMatrix[2][0].jogada == simbolo)
@@ -86,10 +85,6 @@ bool verificaVitoria(char simbolo) {
 }
 
 int main() {
-
-cout << "==============================\n";
-cout << "      🕹️  JOGO DO GALO      \n";
-cout << "==============================\n\n";
 
     Jogadores p1, p2;
     pedeNome(p1, p2);
